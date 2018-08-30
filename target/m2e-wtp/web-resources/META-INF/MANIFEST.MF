@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: bootTest
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: ge
+Implementation-Vendor-Id: springBoot
+Build-Jdk: 1.8.0_92
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
+ ot-starter-parent/bootTest
+Created-By: Maven Integration for Eclipse
+

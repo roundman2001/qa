@@ -1,0 +1,204 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta content="" name="description" />
+<meta content="webthemez" name="author" />
+<title>MES系统</title>
+
+
+<link rel="shortcut icon" href="${rc.contextPath}/img/fav.ico" type="image/x-icon" />
+<!-- Bootstrap Styles-->
+
+<link rel="stylesheet"
+	href="webjars/bootstrap/3.3.5/css/bootstrap.min.css" />
+<!-- FontAwesome Styles-->
+<link href="${rc.contextPath}/css/font-awesome.css" rel="stylesheet" />
+<!-- Morris Chart Styles-->
+<link href="${rc.contextPath}/js/morris/morris-0.4.3.min.css"
+	rel="stylesheet" />
+<!-- Custom Styles-->
+<link href="${rc.contextPath}/css/login-style.css" rel="stylesheet" />
+<!-- Google Fonts-->
+<link href='https://fonts.googleapis.com/css?family=Open+Sans'
+	rel='stylesheet' type='text/css' />
+
+<script src="${rc.contextPath}/js/jquery-1.11.1.min.js"></script>
+<script src="${rc.contextPath}/js/jquery.backstretch.min.js"></script>
+<script src="${rc.contextPath}/js/common.js"></script>
+
+<script src="${rc.contextPath}/js/bootstrapValidator.min.js"></script>
+<script src="${rc.contextPath}/js/language/zh_CN.js"></script>
+<link href="${rc.contextPath}/css/bootstrapValidator.min.css"
+	rel="stylesheet" />
+	
+<style>
+.modal-dialog { 
+    position: absolute; 
+    top: 0; 
+    bottom: 0; 
+    left: 0; 
+    right: 0; 
+    min-width: 900px; 
+} 
+
+.modal-content { 
+    /*overflow-y: scroll; */ 
+    position: absolute; 
+    top: 0; 
+    bottom: 0; 
+    left: 0;
+    width: 100%;  
+} 
+
+.modal-body { 
+    overflow-y: scroll; 
+    position: absolute; 
+    top: 55px; 
+    bottom: 65px; 
+    width: 100%; 
+} 
+
+.modal-header .close {margin-right: 15px;} 
+
+.modal-footer {
+    position: absolute; 
+    width: 100%; 
+    bottom: 0; 
+}
+</style>
+
+<script type="text/javascript">
+	window.onload = function() {
+		$('.top-content').backstretch("img/backgrounds/1.png");
+
+		$("#keyword").bind('keypress', function(e) {
+			var keycode = e.keyCode;
+			if (keycode == '13') {
+				e.preventDefault();
+				search();
+			}
+		});
+	}
+
+	function search() {
+		//var ret = ajaxPost('./form',{keyword:""});
+		var keyword = $.trim($('#keyword').val());
+
+		if (keyword == '') {
+			alert('请输入您的问题！');
+			return;
+		}
+
+		var url = './dosearch?keyword=' + encodeURIComponent(keyword);
+		window.location.href = url;
+	}
+	
+	function showModal(id)
+	{ 
+		var retData =ajaxPost('./getcontent',{id:id})
+		
+		console.log(retData);
+		
+		$('#myModalLabel').html(retData.title);
+		$('#myModalBody').html(retData.body);
+	}
+</script>
+</head>
+
+<body>
+	<div id="wrapper">
+		<div class="top-content">
+			<div style='padding-top: 2%; padding-bottom: 2%;'>
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-6 col-sm-offset-3 form-box"
+							style='margin-top: 0%;'>
+							<div class="form-top">
+								<div style="text-align: center; width: 100%; padding-top: 25px">
+									<img src="img/LOGO.png" />
+								</div>
+							</div>
+							<div class="form-bottom">
+								<div class="form-group" style="display: flex;">
+									<input type="text" name="keyword" placeholder="请输入您的问题..."
+										class="form-username form-control" id="keyword" required
+										value="${keyword}">
+									<button type="button" style="margin-left: 5px; width: 38px"
+										class="btn btn-success" onclick="search()">
+										<span style='font-weight: 900;'
+											class="glyphicon glyphicon-search"></span>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+
+
+	<div class="panel panel-success" style="margin: 5px">
+		<div class="panel-heading">
+			<h3 class="panel-title">查询结果:共 (${resultCount}) 条记录</h3>
+		</div>
+		<div class="panel-body">
+
+			<#list resultList as result>
+
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<a href="#" onclick="showModal(${result.id?c});" style="text-decoration: underline;" data-toggle="modal" data-target="#myModal">${result.title}</a>
+					</h3>
+				</div>
+				<div class="panel-body">${result.body}</div>
+			</div>
+
+			</#list>
+		</div>
+	</div>
+
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true"  >
+		<div class="modal-dialog">
+			<div class="modal-content" >
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">模态框（Modal）标题</h4>
+				</div>
+				<div class="modal-body"  id="myModalBody"  >在这里添加一些文本</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">没用</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal">有用</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal -->
+	</div>
+</body>
+
+<!-- JS Scripts-->
+<!-- jQuery Js -->
+
+<!-- Bootstrap Js -->
+<script
+	src="${rc.contextPath}/webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+<!-- Metis Menu Js -->
+<script src="${rc.contextPath}/js/jquery.metisMenu.js"></script>
+<!-- Morris Chart Js -->
+<script src="${rc.contextPath}/js/morris/raphael-2.1.0.min.js"></script>
+<script src="${rc.contextPath}/js/morris/morris.js"></script>
+
+</html>
+
