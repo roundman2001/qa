@@ -71,11 +71,19 @@ public class TestController {
     	List<TDoc> newResultList = new ArrayList<>();
     	
     	String[] keywordArray = keyword.split(" ");
+
+    	String strBody = "";
     	
     	for (TDoc tDoc : listDoc) {
 			
     		tDoc.setTitle(changeKeyWordStyle(tDoc.getTitle(),keywordArray));
-    		tDoc.setBody(changeKeyWordStyle(tDoc.getBody(),keywordArray));
+    		strBody = tDoc.getBody();
+    		strBody = shortenWord(strBody);
+//    		strBody = changeKeyWordStyle(strBody,keywordArray);
+    		if (strBody.length()> 200) {
+        		strBody = strBody.substring(0, 200);
+    		}
+    		tDoc.setBody(strBody);
     		
     		newResultList.add(tDoc);
 		}
@@ -96,6 +104,15 @@ public class TestController {
     		if (!keyword.isEmpty())
     			resultWord = resultWord.replaceAll(keyword, "<font style='color:red;background-color: yellow;'>"+keyword+"</font>");
 		} 
+    	
+    	return resultWord;
+    }
+    
+    String shortenWord(String wholeWord)
+    {      	
+    	String resultWord =wholeWord;
+    	String regEx_html="<[^>]+>";
+    	resultWord = resultWord.replaceAll(regEx_html, "");
     	
     	return resultWord;
     }
@@ -158,6 +175,24 @@ public class TestController {
         return "success"; 
     } 
      
+    @RequestMapping(value = "/addcontent",method = RequestMethod.GET)  
+    public Object getContent(HttpServletRequest request) {
+
+		Map<String, Object> model = new HashMap<String, Object>(); 
+
+		model.put("keyword", 1); 
+		
+		return new ModelAndView("ueditor/index");  
+		
+//    	log.info("warning 画面");
+//
+//    	String id = reqMap.get("id").toString();
+//    	
+//    	TDoc doc = docDao.getOne(Integer.parseInt(id));
+    	
+//        return doc; 
+		
+    } 
 	@RequestMapping(value = "/warning",method = RequestMethod.GET)  
     public Object warning() {
 
